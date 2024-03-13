@@ -9,6 +9,7 @@ import Light from "./modules/Light";
 export default function BaseSceneObjects() {
     return (
         <>
+            <axesHelper args={[100]}/>
             <Light/>
             <SkyBox/>
             <FloorMap/>

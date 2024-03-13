@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import {useEffect, useState} from "react";
+import TextureLoader from "../../utils/TextureLoader";
 
 /*
 * Подложка с картой на сцене
@@ -9,39 +10,25 @@ export default function FloorMap() {
 
     const [material, setMaterial] = useState(new THREE.MeshPhysicalMaterial({side: THREE.DoubleSide, }));
 
-    let textureLoader = new THREE.TextureLoader()
+    let textureLoader = new TextureLoader()
     useEffect(() => {
-
-        let loadingTextures = new Promise(function (resolve){
-
+        const callback = (result) => {
             let new_material = material.clone()
-            let repeatVector = new THREE.Vector2(8, 8)
 
-            new_material.map = textureLoader.load('./floor/floor.jpg')
-            new_material.map.wrapS = THREE.RepeatWrapping;
-            new_material.map.wrapT = THREE.RepeatWrapping;
-            new_material.map.repeat.copy( repeatVector );
+            for(let key in result){
+                new_material[key] = result[key]
+            }
 
-            new_material.normalMap = textureLoader.load('./floor/floor_normal.png')
-            new_material.normalMap.wrapS = THREE.RepeatWrapping;
-            new_material.normalMap.wrapT = THREE.RepeatWrapping;
-            new_material.normalMap.repeat.copy( repeatVector );
+            new_material.roughness = 0.7
+            setMaterial(new_material)
+        }
 
-            new_material.aoMap = textureLoader.load('./floor/floor_ambient_occlusion.png')
-            new_material.aoMap.wrapS = THREE.RepeatWrapping;
-            new_material.aoMap.wrapT = THREE.RepeatWrapping;
-            new_material.aoMap.repeat.copy( repeatVector );
-
-            new_material.roughnessMap = textureLoader.load('./floor/floor_roughness.png')
-            new_material.roughnessMap.wrapS = THREE.RepeatWrapping;
-            new_material.roughnessMap.wrapT = THREE.RepeatWrapping;
-            new_material.roughnessMap.repeat.copy( repeatVector );
-
-            resolve(new_material)
-        })
-
-        loadingTextures.then(result => setMaterial(result))
-
+        textureLoader.load(callback, {
+            map:         "./floor/floor.jpg",
+            normalMap:   "./floor/floor_normal.png",
+            aoMap:       "./floor/floor_ambient_occlusion.png",
+            roughnessMap:"./floor/floor_roughness.png",
+        }, new THREE.Vector2(50, 50))
     }, []);
 
     let geometry = new THREE.PlaneGeometry(630,630)

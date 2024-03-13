@@ -5,6 +5,7 @@ import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-
 import Controllers from "./Controllers/Controllers";
 import BaseSceneObjects from "./BaseSceneObjects/BaseSceneObjects";
 import {useWindowSize} from "./hooks/useWindowSize";
+import View3D from "./View3D/View3D";
 
 
 //Оптимизация raycaster-а с 3D объектами
@@ -15,14 +16,14 @@ THREE.Mesh.prototype.raycast = acceleratedRaycast;
 
 const raycaster_params = {              //Параметры raycaster-а, которые будут переданы компоненту Canvas
     params: {
-        Line: {threshold: 0.1},         //настройка точности
+        Line: {threshold: 0.1},                      //настройка точности
         Points: {threshold: 0.1}
     },
     firstHitOnly: true
 }
 
 const camera_params = {                 //Параметры камеры, которые будут переданы компоненту Canvas
-    position: [250, 100, 250]            //стартовая позиция в пространстве
+    position: [250, 100, 250]                       //стартовая позиция в пространстве
 }
 
 /**
@@ -40,6 +41,7 @@ export default function MainThree() {
             >
                 <Controllers/>
                 <BaseSceneObjects/>
+                <View3D/>
             </Canvas>
         </div>
     );
