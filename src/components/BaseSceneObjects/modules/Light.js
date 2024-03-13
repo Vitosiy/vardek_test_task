@@ -2,7 +2,7 @@ import {useThree} from "@react-three/fiber";
 import * as THREE from "three";
 
 /**
- *Основной компонент света на 3D сцене.
+ *Свет на 3D сцене.
  */
 export default function Light() {
     const {gl} = useThree()

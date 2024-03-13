@@ -3,13 +3,13 @@ import {useEffect, useState} from "react";
 import TextureLoader from "../../utils/TextureLoader";
 
 /*
-* Подложка с картой на сцене
+* Подложка на сцене (пол)
 * */
-
 export default function FloorMap() {
 
     const [material, setMaterial] = useState(new THREE.MeshPhysicalMaterial({side: THREE.DoubleSide, }));
 
+    //Загрузка текстур для подложки сцены
     let textureLoader = new TextureLoader()
     useEffect(() => {
         const callback = (result) => {

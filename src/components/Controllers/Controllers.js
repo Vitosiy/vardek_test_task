@@ -1,4 +1,3 @@
-import EventController from "./modules/EventControls/EventController";
 import {MyOrbitControlsComponent} from "./modules/MyOrbitControls/MyOrbitControlsComponent";
 
 /**
@@ -8,7 +7,6 @@ import {MyOrbitControlsComponent} from "./modules/MyOrbitControls/MyOrbitControl
 export default function Controllers() {
     return (
         <>
-            <EventController/>
             <MyOrbitControlsComponent
                 maxDistance={500}
                 enableDamping={false}

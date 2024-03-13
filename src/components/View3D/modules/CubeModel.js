@@ -14,6 +14,7 @@ export default function CubeModel(props) {
 
     const geometry = new THREE.BoxGeometry( size, size, size );
 
+    //Загрузка текстур для модели
     let textureLoader = new TextureLoader()
     useEffect(() => {
         const callback = (result) => {
@@ -38,7 +39,7 @@ export default function CubeModel(props) {
         })
     }, []);
 
-    //Анимация вращения (просто так :-))
+    //Анимация вращения
     useFrame(({ clock }) => {
         ref.current.rotation.x = clock.getElapsedTime()
         ref.current.rotation.y = clock.getElapsedTime()

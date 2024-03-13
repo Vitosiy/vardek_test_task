@@ -14,6 +14,7 @@ export default function TorusKnotModel(props) {
 
     const geometry = new THREE.TorusKnotGeometry( knotRadius, tubeRadius, 100, 16 );
 
+    //Загрузка текстур для модели
     let textureLoader = new TextureLoader()
     useEffect(() => {
         const callback = (result) => {

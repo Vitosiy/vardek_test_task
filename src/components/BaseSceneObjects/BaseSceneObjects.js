@@ -5,7 +5,6 @@ import Light from "./modules/Light";
 /**
  *Компонент, создающий основное оформление сцены.
  */
-
 export default function BaseSceneObjects() {
     return (
         <>
