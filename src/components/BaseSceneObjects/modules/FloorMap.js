@@ -31,7 +31,7 @@ export default function FloorMap() {
         }, new THREE.Vector2(50, 50))
     }, []);
 
-    let geometry = new THREE.PlaneGeometry(630,630)
+    let geometry = new THREE.PlaneGeometry(200,200)
     geometry.rotateX(-Math.PI / 2);
     geometry.rotateY(-Math.PI / 2);
     geometry.translate(0,-0.01,0);

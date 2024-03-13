@@ -25,4 +25,28 @@ export default class Utils {
             this.colorizeSelectedModel(child, color)
         }
     }
+
+    //Получение из url расширения файла
+    static parseExtension(url){
+        return url.split(".").pop()
+    }
+
+    static unionBoundingBox(model) {
+
+        let boundingBox = new THREE.Box3();
+
+        if (model.geometry) {
+            model.geometry.computeBoundingBox();
+            boundingBox = model.geometry.boundingBox.clone();
+            if (boundingBox.min.length() === Infinity || boundingBox.max.length() === Infinity) {
+                return null;
+            }
+        }
+
+        for (let child of model.children) {
+            boundingBox.union(this.unionBoundingBox(child));
+        }
+
+        return boundingBox;
+    }
 }

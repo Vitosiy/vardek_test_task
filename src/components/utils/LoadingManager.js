@@ -1,5 +1,6 @@
 import * as THREE from "three";
 import {GLTFLoader} from "three/examples/jsm/loaders/GLTFLoader";
+import Utils from "./Utils";
 
 //Менеджер загрузки 3D моделей с сервера
 export default class LoadingManager {
@@ -7,7 +8,7 @@ export default class LoadingManager {
     //Метод для указания пути, по которому загружаем модели
     static getModels(model_path, callback, callback_error) {
 
-        let extension = parseExtension(model_path).toUpperCase() || "";
+        let extension = Utils.parseExtension(model_path).toUpperCase() || "";
 
         if (extension === "GLB") {
             extension = "GLTF";
@@ -111,7 +112,7 @@ export default class LoadingManager {
         calculateTranslateVector()
         translateGeometry(model);
 
-        model.unionBoundingBox = unionBoundingBox(model);
+        model.unionBoundingBox = Utils.unionBoundingBox(model);
         model.updateMatrixWorld(true)
 
         return translateVector;
@@ -141,7 +142,7 @@ export default class LoadingManager {
 
         scaleGeometry(model)
 
-        model.unionBoundingBox = unionBoundingBox(model);
+        model.unionBoundingBox = Utils.unionBoundingBox(model);
         model.updateMatrixWorld(true)
     }
 
@@ -149,28 +150,4 @@ export default class LoadingManager {
         // .glb & .gltf
         return new GLTFLoader();
     }
-}
-
-//Получение из url расширения файла
-function parseExtension(url){
-    return url.split(".").pop()
-}
-
-function unionBoundingBox(model) {
-
-    let boundingBox = new THREE.Box3();
-
-    if (model.geometry) {
-        model.geometry.computeBoundingBox();
-        boundingBox = model.geometry.boundingBox.clone();
-        if (boundingBox.min.length() === Infinity || boundingBox.max.length() === Infinity) {
-            return null;
-        }
-    }
-
-    for (let child of model.children) {
-        boundingBox.union(unionBoundingBox(child));
-    }
-
-    return boundingBox;
 }

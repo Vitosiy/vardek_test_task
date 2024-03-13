@@ -82,10 +82,11 @@ export default function DoorThreeModel(props){
             objectType="door"
             castShadow
             receiveShadow
-            onContextMenu={(event) => three_dom_elem.dispatchEvent(new CustomEvent("contextMenuMesh",
+            onContextMenu={(event) => three_dom_elem.dispatchEvent(new CustomEvent("create_menu",
                 {
                     detail: {
-                       object: ref.current,
+                        points: [event.offsetX, event.offsetY],
+                        object: ref.current,
                     }
                 }))
             }

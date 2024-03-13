@@ -4,7 +4,6 @@ import {Canvas} from "@react-three/fiber";
 import { computeBoundsTree, disposeBoundsTree, acceleratedRaycast } from 'three-mesh-bvh';
 import Controllers from "./Controllers/Controllers";
 import BaseSceneObjects from "./BaseSceneObjects/BaseSceneObjects";
-import {useWindowSize} from "./hooks/useWindowSize";
 import View3D from "./View3D/View3D";
 
 
@@ -29,20 +28,15 @@ const camera_params = {                 //Параметры камеры, ко�
 /**
  * Создание сцены Three.js
  */
-export default function MainThree() {
-
-    const [width, height] = useWindowSize()
-
+export default function Three() {
     return (
-        <div style={{height, width}}>
-            <Canvas
-                raycaster={raycaster_params}
-                camera={camera_params}
-            >
-                <Controllers/>
-                <BaseSceneObjects/>
-                <View3D/>
-            </Canvas>
-        </div>
+        <Canvas
+            raycaster={raycaster_params}
+            camera={camera_params}
+        >
+            <Controllers/>
+            <BaseSceneObjects/>
+            <View3D/>
+        </Canvas>
     );
 }

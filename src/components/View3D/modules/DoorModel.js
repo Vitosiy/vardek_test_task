@@ -5,7 +5,7 @@ import * as DREI from '@react-three/drei'
 
 import LoadingManager from "../../utils/LoadingManager";
 
-//Добавляет дверь из 3D модели
+//Добавляет дверь из 3D модели (не используется)
 export default function DoorModel(props) {
     const ref = useRef()
     const [model, setModel] = useState(false);
@@ -34,7 +34,13 @@ export default function DoorModel(props) {
                     objectType="door"
                     castShadow
                     receiveShadow
-                    onContextMenu={(event) => three_dom_elem.dispatchEvent(new CustomEvent("contextMenuMesh", {detail: event}))}
+                    onContextMenu={(event) => three_dom_elem.dispatchEvent(new CustomEvent("create_menu",
+                        {
+                            detail:{
+                                points: [event.offsetX, event.offsetY],
+                                object: ref.current,
+                            }
+                        }))}
                 />
             )}
         </Suspense>
