@@ -73,32 +73,35 @@ export default function DoorThreeModel(props){
         }, new THREE.Vector2(6, 6))
     }, []);
 
-    return (
-        <mesh
-            ref={ref}
-            position={position}
-            geometry={single_door_geometry}
-            material={material}
-            objectType="door"
-            castShadow
-            receiveShadow
-            onContextMenu={(event) => three_dom_elem.dispatchEvent(new CustomEvent("create_menu",
-                {
-                    detail: {
-                        points: [event.offsetX, event.offsetY],
-                        object: ref.current,
-                    }
-                }))
-            }
-            onPointerOver={(event) => {
-                if (!event.buttons)
-                    Utils.colorizeSelectedModel(ref.current, new THREE.Color(0x757575))
-            }}
-            onPointerOut={(event) => {
-                if (!event.buttons)
-                    Utils.colorizeSelectedModel(ref.current)
-            }}
-        />
-    )
+    if(material.length)
+        return (
+            <mesh
+                ref={ref}
+                position={position}
+                geometry={single_door_geometry}
+                material={material}
+                objectType="door"
+                castShadow
+                receiveShadow
+                onContextMenu={(event) => three_dom_elem.dispatchEvent(new CustomEvent("create_menu",
+                    {
+                        detail: {
+                            points: [event.offsetX, event.offsetY],
+                            object: ref.current,
+                        }
+                    }))
+                }
+                onPointerOver={(event) => {
+                    if (!event.buttons)
+                        Utils.colorizeSelectedModel(ref.current, new THREE.Color(0x757575))
+                }}
+                onPointerOut={(event) => {
+                    if (!event.buttons)
+                        Utils.colorizeSelectedModel(ref.current)
+                }}
+            />
+        )
+    else
+        return null
 
 }

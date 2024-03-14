@@ -10,8 +10,8 @@ export default function Light() {
     gl.shadowMap.enabled = true
     gl.shadowMap.type = THREE.PCFSoftShadowMap
 
-    const shadow_const = 512 * 4
-    const size_camera = 1000
+    const shadow_const = 512 * 5
+    const size_camera = 110
 
     return (
         <>
@@ -24,12 +24,9 @@ export default function Light() {
                 position={[-50, 80, -50]}
                 intensity={0.7}
                 shadow-mapSize={[shadow_const, shadow_const]}
-            >
-                <orthographicCamera
-                    attach="shadow-camera"
-                    args={[-size_camera, size_camera, size_camera, -size_camera, -1000, 1000]}
-                />
-            </directionalLight>
+                shadow-bias={-0.0001}
+                shadow-camera={new THREE.OrthographicCamera(-size_camera, size_camera, size_camera, -size_camera, 0.5, 1000)}
+            />
         </>
     );
 }
