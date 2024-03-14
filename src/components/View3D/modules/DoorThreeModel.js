@@ -18,14 +18,14 @@ export default function DoorThreeModel(props){
     const three_dom_elem = gl.domElement
 
     const position = props.position || new THREE.Vector3(0, 0, 0)
-    const width = props.width || 1.2
-    const height = props.width || 2
+    const width = props.width || 3
+    const height = props.width || 5
     const depth = props.width || 0.1
 
     let door_geometry = new THREE.BoxGeometry(width, height, depth)
     door_geometry.translate(0, height * 0.5, 0)
 
-    let door_handle_geometry = new THREE.CylinderGeometry(0.05, 0.05, 0.2)
+    let door_handle_geometry = new THREE.CylinderGeometry(0.1, 0.1, 0.3)
     door_handle_geometry.rotateX(Utils.DegToRad(90))
     door_handle_geometry.translate(-width * 0.42, height * 0.5, 0)
 
