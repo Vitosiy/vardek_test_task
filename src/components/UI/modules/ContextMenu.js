@@ -29,14 +29,16 @@ export default function ContextMenu() {
                     });
 
                     let _object = event.detail.object
-                    let boundingBox = Utils.unionBoundingBox(_object)
+                    let boundingBox = _object.unionBoundingBox
+                    let size_preview_mesh = boundingBox.getSize(new THREE.Vector3());
 
                     setObject({
                         item: _object,
                         boundingBox,
-                        width: Math.abs(boundingBox.min.x - boundingBox.max.x),
-                        height: Math.abs(boundingBox.min.y - boundingBox.max.y),
-                        depth: Math.abs(boundingBox.min.z - boundingBox.max.z),
+                        size_preview_mesh,
+                        width: size_preview_mesh.x,
+                        height: size_preview_mesh.y,
+                        depth: size_preview_mesh.z,
                     })
                 })
             }
@@ -47,19 +49,66 @@ export default function ContextMenu() {
     if(!three_dom_elem)
         check_dom_elem()
 
-    const changeObjectSize = (vector) => {
-        let scaleVector =  new THREE.Vector3(object.width, object.height, object.depth).divide(vector)
+    const setInputValue = (id, value) => {
 
-        object.item.scale.copy(scaleVector)
+        let elem = document.getElementById(id);
+        if (elem) {
+            elem.value = value;
+        }
 
-        let boundingBox = Utils.unionBoundingBox(object.item)
+    };
+
+    const changeObjectSize = (axis, value) => {
+        if (!value) {
+            return;
+        }
+
+        let boundingBox = Utils.unionBoundingBox(object.item);
+        let size_preview_mesh = boundingBox.getSize(new THREE.Vector3());
+
+        let scale_value = Math.abs((value * 0.001) / size_preview_mesh[axis]);
+
+        const scale_param = {
+            x: 1, y: 1, z: 1,
+        };
+
+        scale_param.x = scale_value;
+        scale_param.y = scale_value;
+        scale_param.z = scale_value;
+
+        if (axis !== "x") {
+            setInputValue(`sizeX`, Math.round(size_preview_mesh.x * scale_value * 1000));
+        }
+        if (axis !== "y") {
+            setInputValue(`sizeY`, Math.round(size_preview_mesh.y * scale_value * 1000));
+        }
+
+        const setScale = (model) => {
+
+            if (model.geometry) {
+                model.geometry.scale(scale_param.x, scale_param.y, scale_param.z);
+                model.geometry.computeVertexNormals();
+            }
+
+            for (let child of model.children) {
+                setScale(child);
+            }
+
+        };
+
+        setScale(object.item);
+
+        boundingBox = Utils.unionBoundingBox(object.item);
+        size_preview_mesh = boundingBox.getSize(new THREE.Vector3());
+        object.item.unionBoundingBox = boundingBox
 
         setObject({
             item: object.item,
             boundingBox,
-            width: Math.abs(boundingBox.min.x - boundingBox.max.x),
-            height: Math.abs(boundingBox.min.y - boundingBox.max.y),
-            depth: Math.abs(boundingBox.min.z - boundingBox.max.z),
+            size_preview_mesh,
+            width: size_preview_mesh.x,
+            height: size_preview_mesh.y,
+            depth: size_preview_mesh.z,
         })
     }
 
@@ -83,11 +132,11 @@ export default function ContextMenu() {
                             <MenuList>
                                 <TextField
                                     required
-                                    id="outlined-required"
+                                    id="sizeX"
                                     label="Ширина"
-                                    defaultValue={`${object.width * 1000}`}
+                                    defaultValue={`${Math.round(object.width * 1000)}`}
                                     onChange={(event) => {
-                                        changeObjectSize(new THREE.Vector3(+event.target.value / 1000, object.height, object.depth))
+                                        changeObjectSize("x", +event.target.value)
                                     }}
                                 />
                             </MenuList>
@@ -96,11 +145,11 @@ export default function ContextMenu() {
                             <MenuList>
                                 <TextField
                                     required
-                                    id="outlined-required"
+                                    id="sizeY"
                                     label="Высота"
-                                    defaultValue={`${object.height * 1000}`}
+                                    defaultValue={`${Math.round(object.height * 1000)}`}
                                     onChange={(event) => {
-                                        changeObjectSize(new THREE.Vector3(object.width, +event.target.value / 1000, object.depth))
+                                        changeObjectSize("y", +event.target.value)
                                     }}
                                 />
                             </MenuList>
