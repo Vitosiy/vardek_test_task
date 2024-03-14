@@ -4,6 +4,7 @@ import * as THREE from "three";
 import * as DREI from '@react-three/drei'
 
 import LoadingManager from "../../utils/LoadingManager";
+import Utils from "../../utils/Utils";
 
 //Добавляет дверь из 3D модели (не используется)
 export default function DoorModel(props) {
@@ -19,6 +20,7 @@ export default function DoorModel(props) {
         if (!model) {
             LoadingManager.getModels("./Door.glb", (result) => {
                 result.objectType = "door"
+                result.unionBoundingBox = Utils.unionBoundingBox(result)
                 setModel(result)
             })
         }
@@ -30,6 +32,7 @@ export default function DoorModel(props) {
                 <DREI.Clone
                     ref={ref}
                     object={model}
+                    unionBoundingBox={model.unionBoundingBox}
                     position={position}
                     objectType="door"
                     castShadow
